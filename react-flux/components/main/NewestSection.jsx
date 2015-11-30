@@ -1,5 +1,6 @@
 import React from 'react';
 import NewestListItem from './NewestListItem.jsx';
+import HomeStore from '../../stores/HomeStore';
 
 function getNewestListItem(image) {
 	return (
@@ -12,14 +13,15 @@ class NewestSection extends React.Component {
 		super(props);
 
 		this.state = {images: props.images};
+		this._onChange = this._onChange.bind(this);
 	}
 
 	componentDidMount() {
-		
+		HomeStore.addChangeListener(this._onChange);
 	}
 
 	componentWillUnMount() {
-		
+		HomeStore.removeChangeListener(this._onChange);
 	}
 
 	render() {
@@ -38,6 +40,10 @@ class NewestSection extends React.Component {
 			</div>
 			</div>
 		);
+	}
+
+	_onChange(){
+		this.setState({images: this.props.images});
 	}
 }
 

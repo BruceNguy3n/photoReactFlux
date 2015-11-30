@@ -4,6 +4,8 @@ import HomeStore from '../../stores/HomeStore';
 import AuthStore from '../../stores/AuthStore';
 import HomeActionCreator from '../../actions/HomeActionCreator';
 
+var $ = require('jQuery');
+
 function getCommentImgListItem(comment) {
 	return (
 		<CommentImgListItem key={comment._id} comment={comment} />
@@ -26,6 +28,7 @@ class PostCommentSection extends React.Component {
 		this._commentChange = this._commentChange.bind(this);
 		this._postComment = this._postComment.bind(this);
 		this._onChange = this._onChange.bind(this);
+		this.postCommentAndReload = this.postCommentAndReload.bind(this);
 	}
 
 	componentDidMount() {
@@ -96,20 +99,50 @@ class PostCommentSection extends React.Component {
 
 	_commentChange(event) {
 		this.setState({comment: event.target.value});
-		console.log(this.state.comment);
+	}
+
+	reloadComments() {
+		$.ajax({
+			type: "GET",
+			url: "/image/" + this.state.image.filename,
+			dataType: "json"
+		}).done(function(data){
+			HomeActionCreator.newCommentAdded(data);
+		}.bind(this)).fail(function(jqXHR, status){
+			console.log('Something goes wrong. ' + status);
+		});
+	}
+
+	postCommentAndReload(data) {
+		$.ajax({
+			type: "POST",
+			url: "/image/comment",
+			dataType: "json",
+			data: data
+			}).done(function(data){
+				this.reloadComments();
+			}.bind(this)).fail(function(jqXHR, status){
+				console.log('Something goes wrong. ' + status);
+			});
 	}
 
 	_postComment(event) {
-		alert('I am in');
+		console.log('Posting');
 		if(!this.state.comment) {
 			alert('Please provide a comment.');
 			return;
 		}
 
-		HomeActionCreator.postComment(
-			{comment: this.state.comment},
-			{username: this.state.user.userName},
-			{imagename: this.state.image.filename});
+		this.postCommentAndReload({comment: this.state.comment,
+			 username: this.state.user.userName,
+			 imagename: this.state.image.filename});
+
+		this.setState({comment: ''});
+
+		/*HomeActionCreator.postComment(
+			{comment: this.state.comment,
+			 username: this.state.user.userName,
+			 imagename: this.state.image.filename});*/
 	}
 
 	_onChange() {

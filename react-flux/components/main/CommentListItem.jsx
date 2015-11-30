@@ -1,5 +1,6 @@
 import React from 'react';
 import HomeActionCreator from '../../actions/HomeActionCreator';
+import HomeStore from '../../stores/HomeStore';
 
 var Helpers = require('../../utils/Helpers');
 
@@ -8,19 +9,21 @@ class CommentListItem extends React.Component {
 		super(props);
 
 		this.state = {comment: props.comment}
+		this._onClick = this._onClick.bind(this);
+		this._onChange = this._onChange.bind(this);
 	}
 
 	componentDidMount() {
-		
+		HomeStore.addChangeListener(this._onChange);
 	}
 
 	componentWillUnMount() {
-		
+		HomeStore.removeChangeListener(this._onChange);
 	}
 
 	render() {
 
-		var timestamp = Helpers.timeago(this.comment.timestamp);
+		var timestamp = Helpers.timeago(this.state.comment.timestamp);
 		var path = "/public/upload/" + this.state.comment.image.filename;
 
 		return (	
@@ -43,6 +46,10 @@ class CommentListItem extends React.Component {
 	_onClick(event) {
 		HomeActionCreator.goToImagePage(this.state.comment.image);
 		HomeActionCreator.getCommentsForImage(this.state.comment.image);
+	}
+
+	_onChange(){
+		this.setState({comment: this.props.comment});
 	}
 }
 

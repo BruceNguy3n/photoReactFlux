@@ -67,6 +67,11 @@ HomeStore.dispatchToken = AppDispatcher.register(function(action) {
 			_comments = action.data.comments;
 			HomeStore.emitChange();
 			break;
+		case ActionTypes.NEW_COMMENT_ADDED:
+			_comments = action.data.comments;
+			console.log(_comments);
+			HomeStore.emitChange();
+			break;
 		case ActionTypes.GET_COMMENTS_FOR_IMAGE:
 			HomeStore.emitChange();
 			break;

@@ -3,12 +3,16 @@ import HomeStore from '../../stores/HomeStore';
 import UploadSection from './UploadSection.jsx';
 import NewestSection from './NewestSection.jsx';
 import StatsSection from './StatsSection.jsx';
-import CommentSection from './CommentsSection.jsx';
+import CommentsSection from './CommentsSection.jsx';
 import PopularSection from './PopularSection.jsx';
 import ImageDisplaySection from './ImageDisplaySection.jsx';
 import PostCommentSection from './PostCommentSection.jsx';
+import HomeActionCreator from '../../actions/HomeActionCreator';
+
+var $ = require('jQuery');
 
 function getStateFromStores(){
+
 	return {
 		pageName: HomeStore.getPageName(),
 		data: HomeStore.getAllData()
@@ -21,10 +25,23 @@ class BodySection extends React.Component {
 
 		this.state  = getStateFromStores();
 		this._onChange = this._onChange.bind(this);
+		this.loadData = this.loadData.bind(this);
+	}
 
+	loadData(){
+		$.ajax({
+				type: "GET",
+				url: "/",
+				dataType: "json"
+			}).done(function(data){
+				HomeActionCreator.fetchAllData(data);
+			}.bind(this)).fail(function(jqXHR, status){
+				console.log('Something goes wrong. ' + status);
+			});
 	}
 
 	componentDidMount() {
+		setInterval(this.loadData, 5000);
 		HomeStore.addChangeListener(this._onChange);
 	}
 
@@ -45,7 +62,7 @@ class BodySection extends React.Component {
 						<div className="col-sm-4">
 							<StatsSection stats={this.state.data.sidebar.stats} />
 							<PopularSection popular={this.state.data.sidebar.popular} />
-							<CommentSection comments={this.state.data.sidebar.comments} />
+							<CommentsSection comments={this.state.data.sidebar.comments} />
 						</div>
 					</div>
 				</div>
@@ -61,7 +78,7 @@ class BodySection extends React.Component {
 						<div className="col-sm-4">
 							<StatsSection stats={this.state.data.sidebar.stats} />
 							<PopularSection popular={this.state.data.sidebar.popular} />
-							<CommentSection comments={this.state.data.sidebar.comments} />
+							<CommentsSection comments={this.state.data.sidebar.comments} />
 						</div>
 					</div>
 				</div>

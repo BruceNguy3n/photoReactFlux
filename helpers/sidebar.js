@@ -20,7 +20,7 @@ module.exports = function(viewModel, callback){
 			popular: results[1],
 			comments: results[2]
 		};
-
 		callback(viewModel);
+		console.log(results[2]);
 	});
 };

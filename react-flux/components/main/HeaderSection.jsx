@@ -48,7 +48,6 @@ class HeaderSection extends React.Component {
 	}
 
 	_goToUpload() {
-		WebAPIUtils.fetchAllData();
 		HomeActionCreator.goToUploadPage();
 	}
 }

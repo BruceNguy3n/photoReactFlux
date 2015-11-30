@@ -44,7 +44,7 @@
     "watchify": "^3.6.1"
   },
   "scripts": {
-    "start": "watchify -t babelify ./js/components/App.jsx -o ./public/js/photoApp.js -v",
+    "start": "watchify -t babelify ./react-flux/components/App.jsx -o ./public/js/photoApp.js -v",
     "test": "jest"
   },
   "jest": {

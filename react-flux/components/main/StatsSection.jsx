@@ -1,4 +1,5 @@
 import React from 'react';
+import HomeStore from '../../stores/HomeStore';
 
 
 class StatsSection extends React.Component {
@@ -6,14 +7,15 @@ class StatsSection extends React.Component {
 		super(props);
 
 		this.state = {stats: props.stats};
+		this._onChange = this._onChange.bind(this);
 	}
 
 	componentDidMount() {
-		
+		HomeStore.addChangeListener(this._onChange);
 	}
 
 	componentWillUnMount() {
-		
+		HomeStore.removeChangeListener(this._onChange);
 	}
 
 	render() {
@@ -45,6 +47,10 @@ class StatsSection extends React.Component {
 				</div>
 			</div>
 		);
+	}
+
+	_onChange(){
+		this.setState({stats: this.props.stats});
 	}
 }
 

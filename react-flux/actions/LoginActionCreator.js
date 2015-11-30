@@ -30,7 +30,6 @@ module.exports = {
 		});
 
 		WebAPIUtils.login(credentials);
-		WebAPIUtils.fetchAllData();
 	},
 	logout: function(){
 		AppDispatcher.dispatch({

@@ -6,7 +6,7 @@ var express = require('express'),
 app.set('port', process.env.PORT || 3301);
 app = config(app);
 
-mongoose.connect('mongodb://localhost/photoReactDB');
+mongoose.connect('mongodb://localhost/photoReactFluxDB');
 mongoose.connection.on('open', function() {
 	console.log('Mongoose connected.');
 });

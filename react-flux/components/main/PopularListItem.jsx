@@ -1,5 +1,6 @@
 import React from 'react';
 import HomeActionCreator from '../../actions/HomeActionCreator';
+import HomeStore from '../../stores/HomeStore';
 
 class PopularListItem extends React.Component {
 	constructor(props) {
@@ -7,14 +8,15 @@ class PopularListItem extends React.Component {
 
 		this.state = {image: props.image};
 		this._onClick = this._onClick.bind(this);
+		this._onChange = this._onChange.bind(this);
 	}
 
 	componentDidMount() {
-		
+		HomeStore.addChangeListener(this._onChange);
 	}
 
 	componentWillUnMount() {
-		
+		HomeStore.removeChangeListener(this._onChange);
 	}
 
 	render() {
@@ -36,6 +38,10 @@ class PopularListItem extends React.Component {
 	_onClick(event) {
 		HomeActionCreator.goToImagePage(this.state.image);
 		HomeActionCreator.getCommentsForImage(this.state.image);
+	}
+
+	_onChange() {
+		this.setState({image: this.props.image});
 	}
 }
 

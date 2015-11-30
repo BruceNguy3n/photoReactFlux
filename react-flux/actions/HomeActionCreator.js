@@ -46,5 +46,11 @@ module.exports = {
 		});
 
 		PhotoAPIUtils.likePhoto(data);
+	},
+	newCommentAdded: function(data) {
+		AppDispatcher.dispatch({
+			type: ActionTypes.NEW_COMMENT_ADDED,
+			data: data
+		});
 	}
 };

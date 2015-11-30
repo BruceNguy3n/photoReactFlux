@@ -87,28 +87,29 @@ module.exports = {
 						if(err){
 							res.json(err);
 						} else {
-							res.json({likes: image.likes});
+							res.json({image: image});
 						}
 					});
 				}
 			});
 	},
 	comment: function(req, res){
+		console.log(req.body);
 		Models.Image.findOne({filename: {$regex: req.body.imagename}},
 			function(err, image){
 				if(!err && image){
 					var newComment = new Models.Comment();
 					newComment.comment = req.body.comment;
 					newComment.name = req.body.username;
-					newComment.email = req.body.username + '@.fake.com';
+					newComment.email = req.body.username + '@fake.com';
 					newComment.gravatar = md5(newComment.email);
 					newComment.image_id = image._id;
 					newComment.save(function(err, comment){
 						if(err) { throw err; }
-
+						res.json({result: 'Success'});
 					});
 				} else {
-					console.log("Error");
+					console.log("Error " + err);
 				}
 			});
 	},

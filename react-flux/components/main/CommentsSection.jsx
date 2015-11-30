@@ -1,5 +1,6 @@
 import React from 'react';
 import CommentListItem from './CommentListItem.jsx';
+import HomeStore from '../../stores/HomeStore';
 
 function getCommentListItem(comment) {
 	return (
@@ -7,19 +8,20 @@ function getCommentListItem(comment) {
 	);
 }
 
-class PopularSection extends React.Component {
+class CommentsSection extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {comments: props.comments}
+		this._onChange = this._onChange.bind(this);
 	}
 
 	componentDidMount() {
-		
+		HomeStore.addChangeListener(this._onChange);
 	}
 
 	componentWillUnMount() {
-		
+		HomeStore.removeChangeListener(this._onChange);
 	}
 
 	render() {
@@ -41,7 +43,11 @@ class PopularSection extends React.Component {
 			</div>
 		);
 	}
+
+	_onChange(){
+		this.setState({comments: this.props.comments});
+	}
 }
 
-PopularSection.propTypes = {image: React.PropTypes.object};
-export default PopularSection;
+CommentsSection.propTypes = {image: React.PropTypes.object};
+export default CommentsSection;

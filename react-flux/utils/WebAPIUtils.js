@@ -27,9 +27,20 @@ HomeActionCreator.fetchAllData = function(data) {
 	});
 };
 
+var fetchAllData = function() {
+		$.ajax({
+			type: "GET",
+			url: "/",
+			dataType: "json"
+		}).done(function(data){
+			HomeActionCreator.fetchAllData(data);
+		}).fail(function(jqXHR, status){
+			console.log('Something goes wrong. ' + status);
+		});
+}
 
 module.exports = {
-
+	fetchAllData,
 	createAccount: function(user) {
 
 		if(user) {
@@ -41,6 +52,7 @@ module.exports = {
 			}).done(function(data){
 
 				if(data.result === 'success') {
+					fetchAllData();
 					LoginActionCreator.createAccountSuccessful(data.data);
 				} else if(data.result === 'failure') {
 					alert('User name: ' + data.data + ' already existed.');
@@ -50,6 +62,7 @@ module.exports = {
 			});
 		}
 	},
+
 
 	login: function(credentials) {
 
@@ -62,6 +75,7 @@ module.exports = {
 			}).done(function(data){
 				if(data.data) {
 					LoginActionCreator.loginSuccessful(data.data);
+					fetchAllData();
 				} else if(!data.data) {
 					alert('Username and / or password incorrect.');
 				}
@@ -69,17 +83,5 @@ module.exports = {
 				alert('Something goes wrong.');
 			});
 		}
-	},
-
-	fetchAllData: function(data) {
-		$.ajax({
-			type: "GET",
-			url: "/",
-			dataType: "json"
-		}).done(function(data){
-			HomeActionCreator.fetchAllData(data);
-		}).fail(function(jqXHR, status){
-			console.log('Something goes wrong. ' + status);
-		});
 	}
 };

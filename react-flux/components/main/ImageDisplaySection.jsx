@@ -2,6 +2,8 @@ import React from 'react';
 import HomeStore from '../../stores/HomeStore';
 import HomeActionCreator from '../../actions/HomeActionCreator';
 
+
+var $ = require('jQuery');
 var Helpers = require('../../utils/Helpers');
 
 function getStateFromStores(){
@@ -21,11 +23,10 @@ class ImageDisplaySection extends React.Component {
 
 	componentDidMount() {
 		HomeStore.addChangeListener(this._onChange);
-		HomeStore.removeChangeListener(this._onChange);
 	}
 
 	componentWillUnMount() {
-		
+		HomeStore.removeChangeListener(this._onChange);
 	}
 
 	render() {
@@ -56,20 +57,35 @@ class ImageDisplaySection extends React.Component {
 					</div>
 					<hr />
 					<div className="row">
-					<div className="col-md-12 text-center">
-						Posted: <em className="text-muted">{timestamp}</em>
+						<div className="col-md-12 text-center">
+							Posted: <em className="text-muted">{timestamp}</em>
+						</div>
 					</div>
-				</div>
 				</div>
 			</div>	
 		);
 	}
 
+	likeAndLoadData(data) {
+		$.ajax({
+			type: "POST",
+			url: "/image/like",
+			data: data,
+			dataType: "json"
+		}).done(function(data){
+			HomeActionCreator.goToImagePage(data.image);
+			console.log(data);
+		}.bind(this)).fail(function(jqXHR, status){
+			console.log('Something goes wrong. ' + status);
+		});
+	}
+
 	_doLike(event) {
-		HomeActionCreator.likePhoto({filename: this.state.image.filename});
+		this.likeAndLoadData({filename: this.state.image.filename});
 	}
 
 	_onChange(){
+
 		this.setState(getStateFromStores());
 	}
 }

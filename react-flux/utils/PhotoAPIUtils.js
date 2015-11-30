@@ -3,6 +3,7 @@ var LoginActionCreator = require('../actions/LoginActionCreator');
 var HomeActionCreator = require('../actions/HomeActionCreator');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var Constants = require('../constants/Constants');
+var WebAPIUtils = require('./WebAPIUtils');
 
 var ActionTypes = Constants.ActionTypes;
 
@@ -29,7 +30,7 @@ module.exports = {
 			data: data,
 			dataType: "json"
 		}).done(function(data){
-
+				
 		}).fail(function(jqXHR, status){
 			console.log('Something goes wrong. ' + status);
 		});
@@ -68,7 +69,7 @@ module.exports = {
 			dataType: "json",
 			data: data
 		}).done(function(data){
-
+			console.log('Done posting comment');
 		}).fail(function(jqXHR, status){
 			console.log('Something goes wrong. ' + status);
 		});

@@ -85,6 +85,7 @@ class SignIn extends React.Component {
 		var password = this.state.password;
 
 		if(!username || !password) {
+			alert("Please enter your username and password.");
 			return;
 		}
 

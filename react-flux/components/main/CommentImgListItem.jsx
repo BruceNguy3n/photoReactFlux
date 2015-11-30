@@ -1,4 +1,5 @@
 import React from 'react';
+import HomeStore from '../../stores/HomeStore';
 
 var Helpers = require('../../utils/Helpers');
 
@@ -7,14 +8,15 @@ class CommentImgListItem extends React.Component {
 		super(props);
 
 		this.state = {comment: props.comment};
+		this._onChange = this._onChange.bind(this);
 	}
 
 	componentDidMount() {
-		
+		HomeStore.addChangeListener(this._onChange);
 	}
 
 	componentWillUnMount() {
-		
+		HomeStore.removeChangeListener(this._onChange);
 	}
 
 	render() {
@@ -37,6 +39,10 @@ class CommentImgListItem extends React.Component {
 			</li>
 						
 		);
+	}
+
+	_onChange(){
+		this.setState({comment: this.props.comment});
 	}
 
 }

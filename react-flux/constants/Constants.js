@@ -16,6 +16,7 @@ module.exports = {
 		DISPLAY_IMAGE_PAGE: null,
 		COMMENT_RECEIVE: null,
 		POST_COMMENT: null,
-		LIKE_PHOTO: null
+		LIKE_PHOTO: null,
+		NEW_COMMENT_ADDED: null
 	})
 };
